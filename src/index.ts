@@ -37,8 +37,7 @@ program
   .name('Hexabot')
   .description('A CLI to manage your Hexabot chatbot instance')
   .version('2.0.0');
-
-program
+  program
   .command('create <projectName>')
   .description('Create a new Hexabot project')
   .option(
@@ -68,12 +67,12 @@ program
 
     try {
       // Check if a custom template was provided
+      let templateUrl;
       if (template) {
         console.log(
           chalk.blue(`Downloading template from GitHub: ${templateRepo}`),
         );
-        const templateUrl = `https://github.com/${templateRepo}/archive/refs/heads/main.zip`;
-        await downloadAndExtractTemplate(templateUrl, projectPath);
+        templateUrl = `https://github.com/${templateRepo}/releases/latest/download/template.zip`;
       } else {
         // Use default template repository
         console.log(
@@ -81,9 +80,10 @@ program
             'No project template provided, using default Hexabot starter template.',
           ),
         );
-        const defaultRepoUrl = `https://github.com/hexastack/hexabot-template-starter/archive/refs/heads/main.zip`;
-        await downloadAndExtractTemplate(defaultRepoUrl, projectPath);
+        templateUrl = `https://github.com/hexastack/hexabot-template-starter/releases/latest/download/template.zip`;
       }
+
+      await downloadAndExtractTemplate(templateUrl, projectPath);
 
       console.log('\n');
       console.log(
