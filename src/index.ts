@@ -37,7 +37,8 @@ program
   .name('Hexabot')
   .description('A CLI to manage your Hexabot chatbot instance')
   .version('2.0.0');
-  program
+
+program
   .command('create <projectName>')
   .description('Create a new Hexabot project')
   .option(
@@ -80,7 +81,19 @@ program
             'No project template provided, using default Hexabot starter template.',
           ),
         );
-        templateUrl = `https://github.com/hexastack/hexabot-template-starter/releases/latest/download/template.zip`;
+        
+        // Fetch the latest release tag using GitHub API
+        const response = await fetch(
+          `https://api.github.com/repos/hexastack/hexabot-template-starter/releases/latest`
+        );
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(
+            `Failed to fetch the latest release information: ${data.message}`
+          );
+        }
+        const latestTag = data.tag_name;
+        templateUrl = `https://github.com/hexastack/hexabot-template-starter/archive/refs/tags/${latestTag}.zip`;
       }
 
       await downloadAndExtractTemplate(templateUrl, projectPath);
@@ -113,6 +126,7 @@ program
       process.exit(1);
     }
   });
+
 
 program
   .command('init')
