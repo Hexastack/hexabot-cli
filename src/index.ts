@@ -64,37 +64,32 @@ program
     }
 
     const { template } = cmd;
-    let templateRepo = template || 'hexastack/hexabot-template-starter';
+    
+    // Check if a custom template was provided
+    if (!template) {
+      // Use default template repository
+      console.log(
+        chalk.blue(
+          'No project template provided, using default Hexabot starter template.',
+        ),
+      );
+    }
+
+    const templateRepo = template || 'hexastack/hexabot-template-starter';
 
     try {
-      // Check if a custom template was provided
-      let templateUrl;
-      if (template) {
-        console.log(
-          chalk.blue(`Downloading template from GitHub: ${templateRepo}`),
+      // Fetch the latest release tag using GitHub API
+      const response = await fetch(
+        `https://api.github.com/repos/${templateRepo}/releases/latest`
+      );
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(
+          `Failed to fetch the latest release information: ${data.message}`
         );
-        templateUrl = `https://github.com/${templateRepo}/releases/latest/download/template.zip`;
-      } else {
-        // Use default template repository
-        console.log(
-          chalk.blue(
-            'No project template provided, using default Hexabot starter template.',
-          ),
-        );
-        
-        // Fetch the latest release tag using GitHub API
-        const response = await fetch(
-          `https://api.github.com/repos/hexastack/hexabot-template-starter/releases/latest`
-        );
-        const data = await response.json();
-        if (!response.ok) {
-          throw new Error(
-            `Failed to fetch the latest release information: ${data.message}`
-          );
-        }
-        const latestTag = data.tag_name;
-        templateUrl = `https://github.com/hexastack/hexabot-template-starter/archive/refs/tags/${latestTag}.zip`;
       }
+      const latestTag = data.tag_name;
+      const templateUrl = `https://github.com/${templateRepo}/archive/refs/tags/${latestTag}.zip`;
 
       await downloadAndExtractTemplate(templateUrl, projectPath);
 

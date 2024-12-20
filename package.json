@@ -11,7 +11,9 @@
     "build": "tsc",
     "start": "node dist/cli.js",
     "dev": "ts-node src/cli.ts",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "release:patch": "npm version patch && git push origin main --tags",
+    "release:minor": "npm version minor && git push origin main --tags"
   },
   "keywords": [],
   "author": "Hexastack",
