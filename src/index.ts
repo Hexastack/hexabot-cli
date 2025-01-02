@@ -36,7 +36,7 @@ const program = new Command();
 program
   .name('Hexabot')
   .description('A CLI to manage your Hexabot chatbot instance')
-  .version('2.0.0');
+  .version('2.0.2');
 
 program
   .command('create <projectName>')
