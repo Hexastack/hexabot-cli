@@ -17,6 +17,7 @@ import {
   validateProjectName,
 } from './lib.js';
 
+const INITIAL_CLI_VERSION = '2.0.0';
 // Get __filename and __dirname equivalents in ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -36,7 +37,7 @@ const program = new Command();
 program
   .name('Hexabot')
   .description('A CLI to manage your Hexabot chatbot instance')
-  .version('2.0.2');
+  .version(process.env.npm_package_version || INITIAL_CLI_VERSION);
 
 program
   .command('create <projectName>')
