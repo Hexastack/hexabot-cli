@@ -18,9 +18,16 @@ import {
 } from './lib.js';
 
 const INITIAL_CLI_VERSION = '2.0.0';
-// Get __filename and __dirname equivalents in ES modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+
+const getVersion = () => {
+  try {
+    const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf-8'));
+    return packageJson.version;
+  } catch (error) {
+    console.error('Error reading package.json:', error);
+    return INITIAL_CLI_VERSION; 
+  }
+};
 
 // Print the Hexabot title using figlet
 console.log(chalk.blue(figlet.textSync('Hexabot')));
@@ -37,7 +44,7 @@ const program = new Command();
 program
   .name('Hexabot')
   .description('A CLI to manage your Hexabot chatbot instance')
-  .version(process.env.npm_package_version || INITIAL_CLI_VERSION);
+  .version(getVersion());
 
 program
   .command('create <projectName>')
