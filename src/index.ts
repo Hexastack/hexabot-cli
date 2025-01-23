@@ -108,7 +108,7 @@ program
       );
       console.log(chalk.yellow(`>> hexabot init`));
       console.log(chalk.gray(`4. Run 🤖:`));
-      console.log(chalk.yellow(`>> hexabot dev --services nlu,ollama`));
+      console.log(chalk.yellow(`>> hexabot dev --services ollama`));
 
       console.log('\n');
       console.log(
