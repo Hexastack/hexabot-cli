@@ -5,7 +5,6 @@ import { Command } from 'commander';
 import figlet from 'figlet';
 import * as fs from 'fs';
 import * as path from 'path';
-import { fileURLToPath } from 'url';
 import {
   checkDockerFolder,
   checkPrerequisites,
@@ -17,11 +16,14 @@ import {
   validateProjectName,
 } from './lib.js';
 
+import { getPath } from 'global-modules-path'
+
 const INITIAL_CLI_VERSION = '2.0.0';
 
 const getVersion = () => {
   try {
-    const packageJsonPath = path.join(__dirname, '..', 'package.json');
+    const __dirname = getPath('hexabot-cli');
+    const packageJsonPath = path.join(__dirname || '', 'package.json');
     const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
     return packageJson.version;
   } catch (error) {
