@@ -1,6 +1,6 @@
 {
   "name": "hexabot-cli",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "Hexabot CLI for creating and managing chatbots built with Hexabot.",
   "main": "dist/index.js",
   "type": "module",
