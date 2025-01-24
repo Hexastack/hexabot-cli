@@ -15,15 +15,15 @@ import {
   parseServices,
   validateProjectName,
 } from './lib.js';
-
-import { getPath } from 'global-modules-path'
+import { fileURLToPath } from 'url';
 
 const INITIAL_CLI_VERSION = '2.0.0';
 
 const getVersion = () => {
   try {
-    const __dirname = getPath('hexabot-cli');
-    const packageJsonPath = path.join(__dirname || '', 'package.json');
+    const filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(filename);
+    const packageJsonPath = path.join(__dirname, '../package.json');
     const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
     return packageJson.version;
   } catch (error) {
