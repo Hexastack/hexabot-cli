@@ -21,7 +21,8 @@ const INITIAL_CLI_VERSION = '2.0.0';
 
 const getVersion = () => {
   try {
-    const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf-8'));
+    const packageJsonPath = path.join(__dirname, '..', 'package.json');
+    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
     return packageJson.version;
   } catch (error) {
     console.error('Error reading package.json:', error);
