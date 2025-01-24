@@ -25,7 +25,8 @@
     "decompress": "^4.2.1",
     "degit": "^2.8.4",
     "dotenv": "^16.4.5",
-    "figlet": "^1.7.0"
+    "figlet": "^1.7.0",
+    "global-modules-path": "~3.0.0"
   },
   "devDependencies": {
     "@types/chalk": "^2.2.0",
@@ -33,6 +34,7 @@
     "@types/decompress": "^4.2.7",
     "@types/degit": "^2.8.6",
     "@types/figlet": "^1.5.8",
+    "@types/global-modules-path": "^2.3.2",
     "@types/node": "^22.7.4",
     "tsx": "^4.19.2",
     "typescript": "^5.6.2"
