@@ -8,11 +8,13 @@ import * as path from 'path';
 import {
   checkDockerFolder,
   checkPrerequisites,
+  createFile,
   dockerCompose,
   dockerExec,
   downloadAndExtractTemplate,
   generateComposeFiles,
   parseServices,
+  validatePluginName,
   validateProjectName,
 } from './lib.js';
 import { fileURLToPath } from 'url';
@@ -254,6 +256,112 @@ program
     const services = parseServices(options.services);
     const composeArgs = generateComposeFiles(FOLDER, services);
     dockerCompose(`${composeArgs} down -v`);
+  });
+
+
+// CLI command to create a new plugin 
+program
+  .command('plugin <pluginName>')
+  .description('Create a new Hexabot plugin')
+  .action((pluginName: string) => {
+    // Validate plugin name
+    if (!validatePluginName(pluginName)) {
+      console.error(
+        chalk.red(
+          'Invalid plugin name. It should contain only lowercase letters, numbers, and dashes.',
+        ),
+      );
+      process.exit(1);
+    }
+
+    // Define the plugins folder path
+    const pluginsFolder = path.join(process.cwd(), 'plugins');
+
+    // Ensure the plugins folder exists
+    if (!fs.existsSync(pluginsFolder)) {
+      fs.mkdirSync(pluginsFolder, { recursive: true });
+    }
+
+    const pluginPath = path.join(pluginsFolder, pluginName);
+
+    // Check if the plugin folder already exists
+    if (fs.existsSync(pluginPath)) {
+      console.error(chalk.red(`A plugin named "${pluginName}" already exists in the plugins folder.`));
+      process.exit(1);
+    }
+
+    // Create plugin folder
+    fs.mkdirSync(pluginPath, { recursive: true });
+
+    // Define file structure and content
+    const files = [
+      {
+        path: 'README.md',
+        content: `# ${pluginName}\n\nPlugin documentation.`,
+      },
+      {
+        path: 'index.plugin.ts',
+        content: `// Main entry point for the ${pluginName} plugin\n\nexport const plugin = {};`,
+      },
+      {
+        path: 'package.json',
+        content: JSON.stringify(
+          {
+            name: pluginName,
+            version: '1.0.0',
+            author: 'Your Name',
+            description: `${pluginName} plugin for Hexabot.`,
+            dependencies: {},
+          },
+          null,
+          2,
+        ),
+      },
+      {
+        path: 'settings.ts',
+        content: `// Settings for the ${pluginName} plugin\n\nexport const settings = {};`,
+      },
+      {
+        path: 'i18n/en/title.json',
+        content: JSON.stringify(
+          {
+            title: `${pluginName} Plugin`,
+          },
+          null,
+          2,
+        ),
+      },
+      {
+        path: 'i18n/en/label.json',
+        content: JSON.stringify(
+          {
+            message: `Message`,
+          },
+          null,
+          2,
+        ),
+      },
+      {
+        path: 'i18n/en/help.json',
+        content: JSON.stringify(
+          {
+            message: `The message that will be sent back.`,
+          },
+          null,
+          2,
+        ),
+      },
+    ];
+
+    // Create files
+    files.forEach((file) => {
+      const filePath = path.join(pluginPath, file.path);
+      createFile(filePath, file.content);
+    });
+
+    console.log(chalk.green(`🎉 Plugin Sturcture ${pluginName} created successfully.`));
+    console.log(chalk.gray(`Next steps:`));
+    console.log(chalk.yellow(`>> Implement your plugin Logic 👨🏻‍💻 `));
   });
 
 // Parse arguments
