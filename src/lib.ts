@@ -35,7 +35,7 @@ export const checkPrerequisites = () => {
     } else {
       console.error(
         chalk.red(
-          `Node.js version must be at least ${requiredNodeVersion}. Current version: ${nodeVersion}`,
+          `Node.js version must be at least ${requiredNodeVersion}. Current version: ${nodeVersion}. Please install or upgrade Node.js.`,
         ),
       );
       process.exit(1);
@@ -43,7 +43,7 @@ export const checkPrerequisites = () => {
   } catch (error) {
     console.error(
       chalk.red(
-        'Node.js is not installed. Please install Node.js version 18.17.0 or higher.',
+        'Node.js is is not accessible or is not installed correctly. Please install Node.js version 18.17.0 or higher and ensure it is in your system\'s PATH.',
       ),
     );
     process.exit(1);
