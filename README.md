@@ -1,4 +1,15 @@
-# Hexabot CLI
+# Hexabot CLI ⚠️ Notice: This Repository Has Been Archived
+
+This repository was used to host the **Hexabot CLI for Hexabot v2**.
+
+As of **Hexabot v3**, the CLI is now maintained directly inside the main Hexabot monorepo:
+
+👉 https://github.com/hexabot-ai/hexabot
+
+This project has been archived and is kept only for historical reference.  
+Please use the Hexabot v3 monorepo for the latest CLI, documentation, updates, and ongoing development.
+
+## Overview
 
 Hexabot CLI is a powerful command-line tool to help manage your Hexabot chatbot instance. With it, you can create new projects, initialize environments, start services in various modes, run database migrations, and more. The CLI aims to make managing your chatbot seamless and intuitive.
 
