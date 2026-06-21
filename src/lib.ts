@@ -4,6 +4,7 @@ import { execSync } from 'child_process';
 import decompress from 'decompress'; // to unzip the downloaded files
 import * as fs from 'fs';
 import * as path from 'path';
+import { ComposeType } from './compose-types.js';
 
 /**
  * Check for pre-requisites
@@ -93,13 +94,13 @@ export const checkDockerFolder = (folder: string): void => {
 /**
  * Generate Docker Compose file arguments based on provided services.
  * @param services List of services
- * @param type Optional type ('dev' | 'prod')
+ * @param type Optional type ('dev' | 'prod' | 'all')
  * @returns String of Docker Compose file arguments
  */
 export const generateComposeFiles = (
   folder: string,
   services: string[],
-  type?: 'dev' | 'prod',
+  type?: ComposeType, 
 ): string => {
   let files = [`-f ${path.join(folder, 'docker-compose.yml')}`];
 
@@ -117,9 +118,19 @@ export const generateComposeFiles = (
   });
 
   if (type) {
-    const mainTypeFile = path.join(folder, `docker-compose.${type}.yml`);
-    if (fs.existsSync(mainTypeFile)) {
-      files.push(`-f ${mainTypeFile}`);
+    if (type === ComposeType.ALL) {
+      const filesType = [ComposeType.DEV, ComposeType.PROD];
+      filesType.forEach((fileType) => {
+        const mainTypeFile = path.join(folder, `docker-compose.${fileType}.yml`);
+        if (fs.existsSync(mainTypeFile)) {
+          files.push(`-f ${mainTypeFile}`);
+        }
+      });
+    } else {
+      const mainTypeFile = path.join(folder, `docker-compose.${type}.yml`);
+      if (fs.existsSync(mainTypeFile)) {
+        files.push(`-f ${mainTypeFile}`);
+      }
     }
   }
 

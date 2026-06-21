@@ -16,6 +16,7 @@ import {
   validateProjectName,
 } from './lib.js';
 import { fileURLToPath } from 'url';
+import { ComposeType } from './compose-types.js';
 
 const INITIAL_CLI_VERSION = '2.0.0';
 
@@ -184,7 +185,7 @@ program
     checkDockerFolder(FOLDER);
 
     const services = parseServices(options.services);
-    const composeArgs = generateComposeFiles(FOLDER, services, 'dev');
+    const composeArgs = generateComposeFiles(FOLDER, services, ComposeType.DEV);
     dockerCompose(`${composeArgs} up --build -d`);
   });
 
@@ -218,7 +219,7 @@ program
     checkDockerFolder(FOLDER);
 
     const services = parseServices(options.services);
-    const composeArgs = generateComposeFiles(FOLDER, services, 'prod');
+    const composeArgs = generateComposeFiles(FOLDER, services, ComposeType.PROD);
     dockerCompose(`${composeArgs} up -d`);
   });
 
@@ -235,7 +236,7 @@ program
     checkDockerFolder(FOLDER);
 
     const services = parseServices(options.services);
-    const composeArgs = generateComposeFiles(FOLDER, services);
+    const composeArgs = generateComposeFiles(FOLDER, services, ComposeType.ALL);
     dockerCompose(`${composeArgs} down`);
   });
 
@@ -252,7 +253,7 @@ program
     checkDockerFolder(FOLDER);
 
     const services = parseServices(options.services);
-    const composeArgs = generateComposeFiles(FOLDER, services);
+    const composeArgs = generateComposeFiles(FOLDER, services, ComposeType.ALL);
     dockerCompose(`${composeArgs} down -v`);
   });
 
