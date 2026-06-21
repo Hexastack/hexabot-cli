@@ -213,3 +213,15 @@ export const downloadAndExtractTemplate = async (
     throw new Error(`Failed to download template from GitHub`);
   }
 };
+
+// Function to validate the plugin name
+export const validatePluginName = (name: string): boolean => /^[a-z0-9]+(-[a-z0-9]+)*$/.test(name);
+
+// Function to create a file with specified content
+export const createFile = (filePath: string, content: string): void => {
+  const dir = path.dirname(filePath);
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+  fs.writeFileSync(filePath, content, 'utf8');
+};
